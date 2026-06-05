@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Toaster } from 'react-hot-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import './globals.css';
@@ -19,6 +20,7 @@ export default function RootLayout({
         <Navbar />
         <main className="min-h-[calc(100vh-200px)]">{children}</main>
         <Footer />
+        <Toaster position="top-right" />
       </body>
     </html>
   );

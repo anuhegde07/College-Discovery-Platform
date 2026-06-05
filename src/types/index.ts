@@ -69,6 +69,13 @@ export interface Placement {
   updatedAt: Date;
 }
 
+export interface PlacementStatistics {
+  placementRate: number;
+  averageSalary: number;
+  highestSalary: number;
+  lowestSalary: number;
+}
+
 // Review Types
 export interface Review {
   id: string;
@@ -102,10 +109,21 @@ export interface Comparison {
   updatedAt: Date;
 }
 
+export interface ComparisonData {
+  college1: College;
+  college2: College;
+  college3?: College;
+}
+
 // Predictor Types
 export interface PredictionRequest {
   exam: 'JEE' | 'NEET' | 'CAT' | 'GMAT' | 'GRE';
   rank: number;
+}
+
+export interface PredictionResponse {
+  colleges: College[];
+  cutoff: number;
 }
 
 // Filter Types
@@ -128,9 +146,15 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
+// API Response Types
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;
   message?: string;
+}
+
+export interface ApiErrorResponse {
+  success: false;
+  error: string;
 }

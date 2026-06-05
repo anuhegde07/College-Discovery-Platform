@@ -39,10 +39,15 @@ A production-grade MVP for college discovery and decision-making platform.
 - **Railway/Render**: Alternative options
 - **Neon**: PostgreSQL hosting
 
+## Project Structure
+
+college-discovery-platform/ ├── src/ │ ├── app/ # Next.js App Router │ │ ├── api/ # API routes │ │ ├── auth/ # Authentication pages │ │ ├── colleges/ # College listing & detail pages │ │ ├── compare/ # Comparison page │ │ ├── predict/ # Predictor tool page │ │ └── layout.tsx # Root layout │ ├── components/ # Reusable React components │ ├── lib/ # Utility functions │ ├── middleware.ts # Next.js middleware │ ├── styles/ # Global styles │ └── types/ # TypeScript type definitions ├── prisma/ │ ├── schema.prisma # Database schema │ └── migrations/ # Database migrations ├── public/ # Static assets ├── .env.example # Environment variables template ├── next.config.js # Next.js configuration ├── tailwind.config.ts # TailwindCSS configuration ├── tsconfig.json # TypeScript configuration └── package.json # Dependencies and scripts
+
+
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 18+ or higher
 - PostgreSQL database
 - Git
 
@@ -52,54 +57,5 @@ A production-grade MVP for college discovery and decision-making platform.
    ```bash
    git clone https://github.com/anuhegde07/college-discovery-platform.git
    cd college-discovery-platform
-   ```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
-
-4. **Set up the database**
-   ```bash
-   npm run db:push
-   ```
-
-5. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-6. **Open in browser**
-   Navigate to `http://localhost:3000`
-
-## Available Scripts
-
-```bash
-npm run dev              # Start dev server
-npm run build            # Build for production
-npm start                # Start production server
-npm run lint             # Run ESLint
-npm run db:push          # Push schema changes to database
-npm run db:studio        # Open Prisma Studio
-```
-
-## Project Structure
-
-```
-college-discovery-platform/
-├── src/
-│   ├── app/
-│   ├── components/
-│   ├── lib/
-│   ├── types/
-│   └── styles/
-├── prisma/
-│   └── schema.prisma
-├── public/
-└── package.json
-```
