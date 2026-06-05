@@ -39,6 +39,8 @@ A production-grade MVP for college discovery and decision-making platform.
 - **Railway/Render**: Alternative options
 - **Neon**: PostgreSQL hosting
 
+## Project Structure
+
 college-discovery-platform/ ├── src/ │ ├── app/ # Next.js App Router │ │ ├── api/ # API routes │ │ ├── auth/ # Authentication pages │ │ ├── colleges/ # College listing & detail pages │ │ ├── compare/ # Comparison page │ │ ├── predict/ # Predictor tool page │ │ └── layout.tsx # Root layout │ ├── components/ # Reusable React components │ ├── lib/ # Utility functions │ ├── middleware.ts # Next.js middleware │ ├── styles/ # Global styles │ └── types/ # TypeScript type definitions ├── prisma/ │ ├── schema.prisma # Database schema │ └── migrations/ # Database migrations ├── public/ # Static assets ├── .env.example # Environment variables template ├── next.config.js # Next.js configuration ├── tailwind.config.ts # TailwindCSS configuration ├── tsconfig.json # TypeScript configuration └── package.json # Dependencies and scripts
 
 
@@ -56,4 +58,4 @@ college-discovery-platform/ ├── src/ │ ├── app/ # Next.js App Rout
    git clone https://github.com/anuhegde07/college-discovery-platform.git
    cd college-discovery-platform
 
-## Project Structure
+
