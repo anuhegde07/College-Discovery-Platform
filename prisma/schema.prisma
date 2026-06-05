@@ -1,0 +1,171 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  savedColleges  SavedCollege[]
+  savedComparisons SavedComparison[]
+  reviews   Review[]
+
+  @@index([email])
+}
+
+model College {
+  id            String   @id @default(cuid())
+  name          String
+  location      String
+  city          String
+  state         String
+  country       String   @default("India")
+  fees          Int      // Annual fees in INR
+  rating        Float    @default(0) // Out of 5
+  description   String?  @db.Text
+  imageUrl      String?
+  website       String?
+  phone         String?
+  email         String?
+  established   Int?
+  ranking       Int?     // National ranking
+
+  // Relations
+  courses       Course[]
+  placements    Placement[]
+  reviews       Review[]
+  comparisons   ComparisonCollege[]
+  savedBy       SavedCollege[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([city])
+  @@index([ranking])
+  @@fulltext([name, city])
+}
+
+model Course {
+  id        String   @id @default(cuid())
+  name      String
+  duration  String   // e.g., "4 Years"
+  collegeId String
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([collegeId])
+}
+
+model Placement {
+  id            String   @id @default(cuid())
+  year          Int
+  placedStudents Int
+  totalStudents Int
+  averageSalary Int      // In INR
+  highestSalary Int      // In INR
+  collegeId     String
+  college       College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([collegeId])
+  @@index([year])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int      // 1-5
+  comment   String   @db.Text
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collegeId String
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([collegeId])
+}
+
+model SavedCollege {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collegeId String
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, collegeId])
+  @@index([userId])
+  @@index([collegeId])
+}
+
+model Comparison {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  colleges  ComparisonCollege[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ComparisonCollege {
+  id           String   @id @default(cuid())
+  comparisonId String
+  comparison   Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  collegeId    String
+  college      College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([comparisonId, collegeId])
+  @@index([comparisonId])
+  @@index([collegeId])
+}
+
+model SavedComparison {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comparisonId String
+  colleges     String[] // Array of college IDs
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model PredictionDataset {
+  id       String @id @default(cuid())
+  exam     String // JEE, NEET, CAT, etc.
+  rank     Int
+  collegeId String
+
+  createdAt DateTime @default(now())
+
+  @@index([exam])
+  @@index([rank])
+}
