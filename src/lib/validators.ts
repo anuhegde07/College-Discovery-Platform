@@ -24,14 +24,15 @@ export const collegeFilterSchema = z.object({
   limit: z.number().default(10),
 });
 
-export const reviewSchema = z.object({
-  rating: z.number().min(1).max(5),
-  comment: z.string().min(10).max(1000),
-});
+// export const reviewSchema = z.object({
+//   rating: z.number().min(1).max(5),
+//   comment: z.string().min(10).max(1000),
+// });
 
-export const predictionSchema = z.object({
-  exam: z.enum(['JEE', 'NEET', 'CAT', 'GMAT', 'GRE']),
-  rank: z.number().min(1),
+// export const predictionSchema = z.object({
+//   exam: z.enum(['JEE', 'NEET', 'CAT', 'GMAT', 'GRE']),
+//   rank: z.number().min(1),
+// });
 // Review validators
 export const reviewSchema = z.object({
   rating: z.number().min(1).max(5, 'Rating must be between 1 and 5'),
@@ -55,6 +56,4 @@ export type LoginInput = z.infer<typeof loginSchema>;
 export type ReviewInput = z.infer<typeof reviewSchema>;
 export type PredictionInput = z.infer<typeof predictionSchema>;
 export type CollegeFilters = z.infer<typeof collegeFilterSchema>;
-export type ReviewInput = z.infer<typeof reviewSchema>;
-export type PredictionInput = z.infer<typeof predictionSchema>;
 export type ComparisonInput = z.infer<typeof comparisonSchema>;

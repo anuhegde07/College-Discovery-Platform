@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
+import { auth } from '../../../auth';
 import prisma from '@/lib/db';
 
 export async function DELETE(
@@ -7,7 +7,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const token = auth.getTokenFromCookies();
+    const token =await auth.getTokenFromCookies();
     if (!token) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -48,7 +48,7 @@ export async function DELETE(
     return NextResponse.json(
       {
         success: true,
-        message: 'College unsaved successfully',
+        message: 'College saved successfully',
       },
       { status: 200 }
     );

@@ -12,6 +12,8 @@ export default function CollegesPage() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
 
   const [filters, setFilters] = useState({
     search: '',
@@ -29,7 +31,7 @@ export default function CollegesPage() {
     try {
       const params = new URLSearchParams();
       params.append('page', pageNum.toString());
-      params.append('limit', '10');
+      params.append('limit', '9');
 
       if (filters.search) params.append('search', filters.search);
       if (filters.city) params.append('city', filters.city);
@@ -72,17 +74,19 @@ export default function CollegesPage() {
     fetchColleges(1);
   };
 
-  const handleReset = () => {
-    setFilters({
-      search: '',
-      city: '',
-      state: '',
-      minFees: '',
-      maxFees: '',
-      minRating: '',
-    });
-    setPage(1);
-  };
+  const handleReset = async () => {
+  setFilters({
+    search: '',
+    city: '',
+    state: '',
+    minFees: '',
+    maxFees: '',
+    minRating: '',
+  });
+
+  await fetch('/api/colleges?page=1&limit=10');
+  fetchColleges(1);
+};
 
   return (
     <div className="container-max py-8">
@@ -97,14 +101,14 @@ export default function CollegesPage() {
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-dark mb-2">Search</label>
             <div className="relative">
-              <Search className="absolute left-3 top-3 text-gray-400" size={18} />
+              <Search className="absolute right-3 top-3 text-gray-400" size={18} />
               <input
                 type="text"
                 name="search"
                 placeholder="Search by college name or location..."
                 value={filters.search}
                 onChange={handleFilterChange}
-                className="input-field pl-10"
+                className="input-field pl-8"
               />
             </div>
           </div>

@@ -22,7 +22,7 @@ export default function SavedCollegesPage() {
       if (response.ok && data.success) {
         setSavedColleges(data.data);
       } else if (response.status === 401) {
-        window.location.href = '/auth/login';
+        window.location.href = '/api/auth/login';
       }
     } catch (error) {
       toast.error('Failed to load saved colleges');

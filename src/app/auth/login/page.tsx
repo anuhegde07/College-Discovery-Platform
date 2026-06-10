@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
+import type { ChangeEvent } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function LoginPage() {
     password: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -63,7 +64,7 @@ export default function LoginPage() {
             <div>
               <label className="block text-sm font-medium text-dark mb-1">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
+                <Mail className="absolute right-5 top-3 text-gray-400" size={18} />
                 <input
                   type="email"
                   name="email"
@@ -79,7 +80,7 @@ export default function LoginPage() {
             <div>
               <label className="block text-sm font-medium text-dark mb-1">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
+                <Lock className="absolute right-5 top-3 text-gray-400" size={18} />
                 <input
                   type="password"
                   name="password"
@@ -103,7 +104,7 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center text-sm text-gray-600">
             Don't have an account?{' '}
-            <Link href="/auth/register" className="text-primary hover:underline font-semibold">
+            <Link href="/api/auth/register" className="text-primary hover:underline font-semibold">
               Sign up here
             </Link>
           </div>

@@ -4,18 +4,15 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Star, MapPin, DollarSign, BookOpen, TrendingUp, MessageSquare, Heart } from 'lucide-react';
-import { College, Course, Placement, Review } from '@/types';
 import { formatCurrency, calculatePlacementRate } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import { Review } from '@prisma/client';
 
 export default function CollegeDetailPage() {
   const params = useParams();
   const collegeId = params.id as string;
 
   const [college, setCollege] = useState<any>(null);
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [placements, setPlacements] = useState<Placement[]>([]);
-  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -28,22 +25,15 @@ export default function CollegeDetailPage() {
   const fetchCollegeDetails = async () => {
     try {
       setLoading(true);
-      const [detailRes, coursesRes, placementsRes, reviewsRes] = await Promise.all([
-        fetch(`/api/colleges/${collegeId}`),
-        fetch(`/api/colleges/${collegeId}/courses`),
-        fetch(`/api/colleges/${collegeId}/placements`),
-        fetch(`/api/colleges/${collegeId}/reviews`),
-      ]);
+      const  response = await fetch(`/api/colleges/${collegeId}`);
+      const data = await response.json();
 
-      const detailData = await detailRes.json();
-      const coursesData = await coursesRes.json();
-      const placementsData = await placementsRes.json();
-      const reviewsData = await reviewsRes.json();
+      if (data.success) {
+        setCollege(data.data);
+      } else {
+        toast.error(data.message || 'Failed to load ');
+      }
 
-      if (detailData.success) setCollege(detailData.data);
-      if (coursesData.success) setCourses(coursesData.data);
-      if (placementsData.success) setPlacements(placementsData.data);
-      if (reviewsData.success) setReviews(reviewsData.data.reviews);
     } catch (error) {
       toast.error('Failed to load college details');
       console.error(error);
@@ -61,7 +51,6 @@ export default function CollegeDetailPage() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
         setIsSaved(true);
         toast.success('College saved!');
@@ -79,11 +68,14 @@ export default function CollegeDetailPage() {
       const response = await fetch(`/api/colleges/${collegeId}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(reviewData),
+        body: JSON.stringify({
+          rating: reviewData.rating,
+          comment: reviewData.comment,
+        }),
       });
 
       const data = await response.json();
-
+      console.log(data);
       if (response.ok) {
         toast.success('Review added successfully!');
         setReviewData({ rating: 5, comment: '' });
@@ -96,7 +88,13 @@ export default function CollegeDetailPage() {
       toast.error('An error occurred');
     }
   };
-
+const averageRating =
+  college?.reviews?.length
+    ? college.reviews.reduce(
+        (sum: number, review: Review) => sum + review.rating,
+        0
+      ) / college.reviews.length
+    : 0;
   if (loading) {
     return (
       <div className="container-max py-8">
@@ -156,7 +154,7 @@ export default function CollegeDetailPage() {
               <span className="text-sm text-gray-600">Rating</span>
             </div>
             <p className="text-2xl font-bold text-dark">
-              {college.averageRating.toFixed(1)}/5
+              {averageRating}
             </p>
             <p className="text-xs text-gray-500 mt-1">({college.reviewCount} reviews)</p>
           </div>
@@ -215,11 +213,11 @@ export default function CollegeDetailPage() {
       )}
 
       {/* Courses */}
-      {courses.length > 0 && (
+      {college?.courses?.length > 0 && (
         <div className="mb-8">
           <h2 className="section-title">Courses Offered</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {courses.map((course) => (
+            {college.courses.map((course: any) => (
               <div key={course.id} className="card">
                 <div className="flex items-start gap-3">
                   <BookOpen className="text-primary flex-shrink-0 mt-1" size={20} />
@@ -235,7 +233,7 @@ export default function CollegeDetailPage() {
       )}
 
       {/* Placements */}
-      {placements.length > 0 && (
+      {college?.placements?.length > 0 && (
         <div className="mb-8">
           <h2 className="section-title">Placement Statistics</h2>
           <div className="overflow-x-auto">
@@ -249,7 +247,7 @@ export default function CollegeDetailPage() {
                 </tr>
               </thead>
               <tbody>
-                {placements.map((placement) => (
+                {college.placements.map((placement:any) => (
                   <tr key={placement.id} className="border-b border-gray-200 hover:bg-light transition">
                     <td className="px-4 py-3 font-semibold">{placement.year}</td>
                     <td className="px-4 py-3">
@@ -273,10 +271,11 @@ export default function CollegeDetailPage() {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="section-title">Reviews & Ratings</h2>
-          <Link href="/auth/login" className="btn-primary">
+          <button onClick={() => setShowReviewForm(true)}
+    className="btn-primary">
             <MessageSquare size={18} className="inline mr-2" />
             Add Review
-          </Link>
+            </button>
         </div>
 
         {showReviewForm && (
@@ -321,9 +320,9 @@ export default function CollegeDetailPage() {
           </form>
         )}
 
-        {reviews.length > 0 ? (
+        {college?.reviews?.length > 0 ? (
           <div className="space-y-4">
-            {reviews.map((review) => (
+            {college.reviews.map((review: any) => (
               <div key={review.id} className="card border-l-4 border-accent">
                 <div className="flex justify-between items-start mb-2">
                   <div>

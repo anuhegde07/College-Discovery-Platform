@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,78 +8,72 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  password  String
-  name      String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-
-  savedColleges  SavedCollege[]
+  id               String            @id @default(cuid())
+  email            String            @unique
+  password         String
+  name             String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  comparisons      Comparison[]
+  reviews          Review[]
+  savedColleges    SavedCollege[]
   savedComparisons SavedComparison[]
-  reviews   Review[]
 
   @@index([email])
 }
 
 model College {
-  id            String   @id @default(cuid())
-  name          String
-  location      String
-  city          String
-  state         String
-  country       String   @default("India")
-  fees          Int      // Annual fees in INR
-  rating        Float    @default(0) // Out of 5
-  description   String?  @db.Text
-  imageUrl      String?
-  website       String?
-  phone         String?
-  email         String?
-  established   Int?
-  ranking       Int?     // National ranking
-
-  // Relations
-  courses       Course[]
-  placements    Placement[]
-  reviews       Review[]
-  comparisons   ComparisonCollege[]
-  savedBy       SavedCollege[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String              @id @default(cuid())
+  name        String
+  location    String
+  city        String
+  state       String
+  country     String              @default("India")
+  fees        Int
+  rating      Float               @default(0)
+  description String?
+  imageUrl    String?
+  website     String?
+  phone       String?
+  email       String?
+  established Int?
+  ranking     Int?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  comparisons ComparisonCollege[]
+  courses     Course[]
+  placements  Placement[]
+  reviews     Review[]
+  savedBy     SavedCollege[]
 
   @@index([name])
   @@index([city])
   @@index([ranking])
-  @@fulltext([name, city])
 }
 
 model Course {
   id        String   @id @default(cuid())
   name      String
-  duration  String   // e.g., "4 Years"
+  duration  String
   collegeId String
-  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
 
   @@index([collegeId])
 }
 
 model Placement {
-  id            String   @id @default(cuid())
-  year          Int
+  id             String   @id @default(cuid())
+  year           Int
   placedStudents Int
-  totalStudents Int
-  averageSalary Int      // In INR
-  highestSalary Int      // In INR
-  collegeId     String
-  college       College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  totalStudents  Int
+  averageSalary  Int
+  highestSalary  Int
+  collegeId      String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  college        College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
 
   @@index([collegeId])
   @@index([year])
@@ -90,15 +81,14 @@ model Placement {
 
 model Review {
   id        String   @id @default(cuid())
-  rating    Int      // 1-5
-  comment   String   @db.Text
+  rating    Int
+  comment   String
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   collegeId String
-  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([collegeId])
@@ -107,11 +97,10 @@ model Review {
 model SavedCollege {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   collegeId String
-  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-
   createdAt DateTime @default(now())
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, collegeId])
   @@index([userId])
@@ -119,26 +108,24 @@ model SavedCollege {
 }
 
 model Comparison {
-  id        String   @id @default(cuid())
+  id        String              @id @default(cuid())
   name      String
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   colleges  ComparisonCollege[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }
 
 model ComparisonCollege {
-  id           String   @id @default(cuid())
+  id           String     @id @default(cuid())
   comparisonId String
-  comparison   Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
   collegeId    String
-  college      College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
+  createdAt    DateTime   @default(now())
+  college      College    @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  comparison   Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
 
   @@unique([comparisonId, collegeId])
   @@index([comparisonId])
@@ -148,22 +135,20 @@ model ComparisonCollege {
 model SavedComparison {
   id           String   @id @default(cuid())
   userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   comparisonId String
-  colleges     String[] // Array of college IDs
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  colleges     String[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model PredictionDataset {
-  id       String @id @default(cuid())
-  exam     String // JEE, NEET, CAT, etc.
-  rank     Int
+  id        String   @id @default(cuid())
+  exam      String
+  rank      Int
   collegeId String
-
   createdAt DateTime @default(now())
 
   @@index([exam])

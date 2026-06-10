@@ -60,11 +60,13 @@ export default function PredictorPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-8">
         {/* Prediction Form */}
         <div className="lg:col-span-1">
           <form onSubmit={handlePredict} className="card sticky top-20">
-            <h2 className="font-bold text-lg mb-6">Enter Your Details</h2>
+            <h2 className="font-bold font-size-15 text-lg mb-6">
+              Enter Your Details
+            </h2>
 
             <div className="space-y-4">
               <div>
@@ -128,7 +130,7 @@ export default function PredictorPage() {
             </div>
           ) : (
             <div>
-              <div className="mb-6">
+              <div className="mb-4">
                 <h2 className="text-2xl font-bold text-dark mb-2">
                   Recommended Colleges for {exam} Rank {rank}
                 </h2>
@@ -140,10 +142,9 @@ export default function PredictorPage() {
                   <a
                     key={college.id}
                     href={`/colleges/${college.id}`}
-                    className="card-hover"
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
+                    <div className="flex gap-6 p-3 border rounded-lg hover:shadow-lg transition">
+                      <div className="flex-1 mb-5 gap-6">
                         <div className="flex items-center gap-3 mb-2">
                           <span className="inline-block w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
                             {idx + 1}
@@ -156,10 +157,10 @@ export default function PredictorPage() {
                           {college.location} • Est. {college.established || 'N/A'}
                         </p>
 
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-2 gap-2">
                           <div>
                             <p className="text-xs text-gray-600">Rating</p>
-                            <p className="font-bold text-dark">{college.rating.toFixed(1)}/5</p>
+                            <p className="font-bold text-dark">{(college.rating ?? "Not disclosed").toFixed(1)}</p>
                           </div>
                           <div>
                             <p className="text-xs text-gray-600">Annual Fees</p>
@@ -172,6 +173,7 @@ export default function PredictorPage() {
                         </div>
                       </div>
                     </div>
+                  <br/>
                   </a>
                 ))}
               </div>

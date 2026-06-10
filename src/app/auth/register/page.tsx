@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, Lock, User } from 'lucide-react';
 import toast from 'react-hot-toast';
+import type { ChangeEvent,FormEvent } from 'react';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function RegisterPage() {
     confirmPassword: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -33,8 +34,9 @@ export default function RegisterPage() {
       setLoading(false);
       return;
     }
-
     try {
+     
+
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -45,15 +47,15 @@ export default function RegisterPage() {
         }),
       });
 
-      const data = await response.json();
-
+        const data = await response.json();
       if (!response.ok) {
-        toast.error(data.error || 'Registration failed');
+        toast.error('Registration failed');
         return;
       }
-
+     
       toast.success('Registration successful!');
       router.push('/colleges');
+
     } catch (error) {
       toast.error('An error occurred');
       console.error(error);
@@ -73,9 +75,9 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-dark mb-1">Full Name</label>
+              <label className="block text-sm font-medium text-dark mb-1">User Name</label>
               <div className="relative">
-                <User className="absolute left-3 top-3 text-gray-400" size={18} />
+                <User className="absolute right-5 top-3 text-gray-400" size={18} />
                 <input
                   type="text"
                   name="name"
@@ -91,7 +93,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-dark mb-1">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
+                <Mail className="absolute right-5 top-3 text-gray-400" size={18} />
                 <input
                   type="email"
                   name="email"
@@ -107,7 +109,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-dark mb-1">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
+                <Lock className="absolute right-5 top-3 text-gray-400" size={18} />
                 <input
                   type="password"
                   name="password"
@@ -123,7 +125,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-dark mb-1">Confirm Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
+                <Lock className="absolute right-5 top-3 text-gray-400" size={18} />
                 <input
                   type="password"
                   name="confirmPassword"

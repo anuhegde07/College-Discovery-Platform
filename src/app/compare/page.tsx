@@ -92,7 +92,7 @@ export default function ComparisonPage() {
           <div className="card sticky top-20">
             <h3 className="font-bold text-lg mb-4">Select Colleges</h3>
             <div className="relative mb-4">
-              <Search className="absolute left-3 top-3 text-gray-400" size={18} />
+              <Search className="absolute right-3 top-3 text-gray-400" size={18} />
               <input
                 type="text"
                 placeholder="Search college..."

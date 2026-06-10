@@ -25,7 +25,7 @@ export default function EnhancedNavbar() {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch('/api/auth/me');
+      const response = await fetch('/auth/me');
       if (response.ok) {
         const data = await response.json();
         setUser(data.data);
@@ -36,7 +36,7 @@ export default function EnhancedNavbar() {
   };
 
   const handleLogout = async () => {
-    const response = await fetch('/api/auth/logout', { method: 'POST' });
+    const response = await fetch('/auth/logout', { method: 'POST' });
     if (response.ok) {
       setUser(null);
       router.push('/');

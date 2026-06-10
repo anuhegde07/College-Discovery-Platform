@@ -23,10 +23,10 @@ export default function ProfilePage() {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await fetch('/api/auth/me');
+      const response = await fetch('/auth/me');
 
       if (response.status === 401) {
-        router.push('/auth/login');
+        router.push('/api/auth/login');
         return;
       }
 
@@ -44,7 +44,7 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/auth/logout', {
+      const response = await fetch('/auth/logout', {
         method: 'POST',
       });
 

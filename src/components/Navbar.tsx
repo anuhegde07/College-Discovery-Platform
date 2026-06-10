@@ -10,8 +10,8 @@ export default function Navbar() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
+  const handleLogOut= async () => {
+    await fetch('/auth/logout', { method: 'POST' });
     router.push('/');
   };
 
