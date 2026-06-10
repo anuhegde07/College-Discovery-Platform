@@ -3,7 +3,6 @@ import { auth } from '../../../auth';
 import prisma from '@/lib/db';
 
 export async function DELETE(
-  request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
