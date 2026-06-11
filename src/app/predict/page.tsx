@@ -125,7 +125,7 @@ export default function PredictorPage() {
               <Search className="mx-auto mb-4 text-gray-400" size={48} />
               <h3 className="text-xl font-semibold text-dark mb-2">No Results Yet</h3>
               <p className="text-gray-600">
-                Fill in your exam details and click "Get Recommendations" to see colleges
+                Fill in your exam details and click &quot;Get Recommendations&quot; to see colleges
               </p>
             </div>
           ) : (

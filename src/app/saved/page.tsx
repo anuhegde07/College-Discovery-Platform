@@ -64,7 +64,7 @@ export default function SavedCollegesPage() {
   return (
     <div className="container-max py-8">
       <h1 className="section-title">Saved Colleges</h1>
-      <p className="section-subtitle">Colleges you've bookmarked for later</p>
+      <p className="section-subtitle">Colleges you&apos;ve bookmarked for later</p>
 
       {savedColleges.length === 0 ? (
         <div className="card text-center py-20">

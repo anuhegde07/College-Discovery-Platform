@@ -1,19 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Menu, X, LogOut, Home, Search, Compass } from 'lucide-react';
+import { Menu, X, Home, Search, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Navbar() {
-  const router = useRouter();
+  // const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleLogOut= async () => {
-    await fetch('/auth/logout', { method: 'POST' });
-    router.push('/');
-  };
+  // const handleLogOut= async () => {
+  //   await fetch('/auth/logout', { method: 'POST' });
+  //   router.push('/');
+  // };
 
   const navLinks = [
     { href: '/colleges', label: 'Colleges', icon: Search },

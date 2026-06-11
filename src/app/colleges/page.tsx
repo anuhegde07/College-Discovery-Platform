@@ -12,8 +12,6 @@ export default function CollegesPage() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState("");
 
   const [filters, setFilters] = useState({
     search: '',

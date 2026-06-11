@@ -3,18 +3,17 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Search, Plus, Trash2 } from 'lucide-react';
+import { Search, Trash2 } from 'lucide-react';
 import { College } from '@/types';
-import { formatCurrency, calculatePlacementRate } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import { Suspense } from 'react';
 
-export default function ComparisonPage() {
+function ComparisonPage() {
   const searchParams = useSearchParams();
   const [selectedColleges, setSelectedColleges] = useState<College[]>([]);
-  const [colleges, setColleges] = useState<College[]>([]);
   const [allColleges, setAllColleges] = useState<College[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchAllColleges();
@@ -172,7 +171,7 @@ export default function ComparisonPage() {
             <div className="mt-6 flex gap-3">
               <button
                 onClick={() => {
-                  const ids = selectedColleges.map((c) => c.id).join(',');
+                  // const ids = selectedColleges.map((c) => c.id).join(',');
                   // Save comparison logic here
                   toast.success('Comparison saved!');
                 }}
@@ -188,5 +187,13 @@ export default function ComparisonPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ComparePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ComparisonPage />
+    </Suspense>
   );
 }

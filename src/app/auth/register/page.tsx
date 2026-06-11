@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, Lock, User } from 'lucide-react';
 import toast from 'react-hot-toast';
-import type { ChangeEvent,FormEvent } from 'react';
+import type { ChangeEvent} from 'react';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -47,7 +47,7 @@ export default function RegisterPage() {
         }),
       });
 
-        const data = await response.json();
+        await response.json();
       if (!response.ok) {
         toast.error('Registration failed');
         return;
